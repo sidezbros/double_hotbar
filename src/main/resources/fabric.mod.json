@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "id": "double_hotbar",
+  "version": "${version}",
+
+  "name": "Double Hotbar",
+  "description": "Displays a second row of the inventory on the HUD and allows easy swapping to the hotbar.",
+  "authors": [
+    "sidezbros"
+  ],
+  "contact": {
+    "homepage": "https://fabricmc.net/",
+    "sources": "https://github.com/sidezbros/double_hotbar"
+  },
+
+  "license": "GPLv3",
+  "icon": "assets/double_hotbar/icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.sidezbros.double_hotbar.DoubleHotbar"
+    ]
+  },
+  "mixins": [
+    "double_hotbar.mixins.json"
+  ],
+
+  "depends": {
+    "fabricloader": ">=0.11.3",
+    "fabric": "*",
+    "minecraft": "1.17.x",
+    "java": ">=16",
+    "fabric-key-binding-api-v1": "*"
+  },
+  "suggests": {
+    "another-mod": "*"
+  }
+}
