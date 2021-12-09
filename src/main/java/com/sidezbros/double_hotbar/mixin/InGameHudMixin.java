@@ -6,6 +6,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.util.math.MatrixStack;
@@ -19,6 +20,7 @@ public abstract class InGameHudMixin extends DrawableHelper{
 	private final int shift = 21;
 	@Shadow private int scaledHeight;
 	@Shadow private int scaledWidth;
+	@Shadow private MinecraftClient client;
 	@Shadow abstract PlayerEntity getCameraPlayer();
 	@Shadow abstract void renderHotbarItem(int x, int y, float tickDelta, PlayerEntity player, ItemStack stack, int seed);
 	
@@ -37,54 +39,15 @@ public abstract class InGameHudMixin extends DrawableHelper{
 	    }
 	}
 	
-	@Inject(method = "renderStatusBars", at = @At(value = "HEAD"))
-	private void shiftStatusBars(MatrixStack matrices, CallbackInfo info) {
+	@Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerInteractionManager;hasStatusBars()Z"))
+	public void shiftStatusBars(MatrixStack matrices, float tickDelta, CallbackInfo info) {
 		this.scaledHeight -= this.shift;
 	}
 	
-	@Inject(method = "renderStatusBars", at = @At(value = "TAIL"))
-	private void returnStatusBars(MatrixStack matrices, CallbackInfo info) {
-		this.scaledHeight += this.shift;
-	}
-	
-	@Inject(method = "renderExperienceBar", at = @At(value = "HEAD"))
-	private void shiftExperienceBar(MatrixStack matrices, int x, CallbackInfo info) {
-		this.scaledHeight -= this.shift;
-	}
-	
-	@Inject(method = "renderExperienceBar", at = @At(value = "TAIL"))
-	private void returnExperienceBar(MatrixStack matrices, int x, CallbackInfo info) {
-		this.scaledHeight += this.shift;
-	}
-	
-	@Inject(method = "renderMountJumpBar", at = @At(value = "HEAD"))
-	private void shiftMountJumpBar(MatrixStack matrices, int x, CallbackInfo info) {
-		this.scaledHeight -= this.shift;
-	}
-	
-	@Inject(method = "renderMountJumpBar", at = @At(value = "TAIL"))
-	private void returnMountJumpBar(MatrixStack matrices, int x, CallbackInfo info) {
-		this.scaledHeight += this.shift;
-	}
-	
-	@Inject(method = "renderMountHealth", at = @At(value = "HEAD"))
-	private void shiftMountHealth(MatrixStack matrices, CallbackInfo info) {
-		this.scaledHeight -= this.shift;
-	}
-	
-	@Inject(method = "renderMountHealth", at = @At(value = "TAIL"))
-	private void returnMountHealth(MatrixStack matrices, CallbackInfo info) {
-		this.scaledHeight += this.shift;
-	}
-	
-	@Inject(method = "renderHeldItemTooltip", at = @At(value = "HEAD"))
-	private void shiftHeldItemTooltip(MatrixStack matrices, CallbackInfo info) {
-		this.scaledHeight -= this.shift;
-	}
-	
-	@Inject(method = "renderHeldItemTooltip", at = @At(value = "TAIL"))
-	private void returnHeldItemTooltip(MatrixStack matrices, CallbackInfo info) {
-		this.scaledHeight += this.shift;
+
+	@Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;getSleepTimer()I", ordinal = 0))
+	public void returnStatusBars(MatrixStack matrices, float tickDelta, CallbackInfo info) {
+		this.scaledHeight = this.client.getWindow().getScaledHeight();
 	}
 
 }

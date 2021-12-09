@@ -10,7 +10,8 @@
   ],
   "contact": {
     "homepage": "https://www.curseforge.com/minecraft/mc-mods/double-hotbar",
-    "sources": "https://github.com/sidezbros/double_hotbar"
+    "sources": "https://github.com/sidezbros/double_hotbar",
+    "issues": "https://github.com/sidezbros/double_hotbar/issues"
   },
 
   "license": "GPLv3",
