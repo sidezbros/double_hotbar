@@ -4,7 +4,7 @@
   "version": "${version}",
 
   "name": "Double Hotbar",
-  "description": "Displays a second row of the inventory on the HUD and allows easy swapping to the hotbar.",
+  "description": "Adds a second hotbar that displays the third row of the inventory on the HUD. This provides a dual hotbar setup where you can easily swap/hotswap/cycle which of the two hotbars is active.",
   "authors": [
     "sidezbros"
   ],
