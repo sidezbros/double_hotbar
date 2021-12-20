@@ -6,6 +6,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import com.sidezbros.double_hotbar.DHModConfig;
+
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.util.math.MatrixStack;
@@ -25,18 +27,23 @@ public abstract class InGameHudMixin extends DrawableHelper{
 	
 	@Inject(method = "renderHotbar", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/InGameHud;drawTexture(Lnet/minecraft/client/util/math/MatrixStack;IIIIII)V", ordinal = 0))
 	private void renderHotbarFrame(float tickDelta, MatrixStack matrices, CallbackInfo info) {
-		this.drawTexture(matrices, this.scaledWidth / 2 - 91, this.scaledHeight - 22 - this.shift, 0, 0, 182, 22);
-		this.onScreen = true;
+		if(DHModConfig.INSTANCE.displayDoubleHotbar) {
+			this.drawTexture(matrices, this.scaledWidth / 2 - 91, this.scaledHeight - 22 - this.shift, 0, 0, 182, 22);
+			this.onScreen = true;
+		}
+		
 	}
 	
 	@Inject(method = "renderHotbar", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isEmpty()Z", ordinal = 1))
 	private void renderHotbarItems(float tickDelta, MatrixStack matrices, CallbackInfo info) {
-		int m = 1;
-		for (int n2 = 0; n2 < 9; ++n2) {
-	            int o = this.scaledWidth / 2 - 90 + n2 * 20 + 2;
-	            int p = this.scaledHeight - 16 - 3;
-	            this.renderHotbarItem(o, p-this.shift, tickDelta, getCameraPlayer(), getCameraPlayer().getInventory().main.get(n2+27), m++);
-	    }
+		if(DHModConfig.INSTANCE.displayDoubleHotbar) {
+			int m = 1;
+			for (int n2 = 0; n2 < 9; ++n2) {
+		            int o = this.scaledWidth / 2 - 90 + n2 * 20 + 2;
+		            int p = this.scaledHeight - 16 - 3;
+		            this.renderHotbarItem(o, p-this.shift, tickDelta, getCameraPlayer(), getCameraPlayer().getInventory().main.get(n2+DHModConfig.INSTANCE.inventoryRow*9), m++);
+		    }
+		}
 	}
 	
 	@Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerInteractionManager;hasStatusBars()Z"))

@@ -19,8 +19,11 @@
 
   "environment": "*",
   "entrypoints": {
-    "main": [
+    "client": [
       "com.sidezbros.double_hotbar.DoubleHotbar"
+    ],
+    "modmenu": [
+        "com.sidezbros.double_hotbar.DHMenuIntegration"
     ]
   },
   "mixins": [
