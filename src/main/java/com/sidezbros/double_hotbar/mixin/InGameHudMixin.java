@@ -17,8 +17,6 @@ import net.minecraft.item.ItemStack;
 @Mixin(InGameHud.class)
 public abstract class InGameHudMixin extends DrawableHelper{
 
-	
-	private final int shift = 21;
 	private boolean onScreen = false;
 	@Shadow private int scaledHeight;
 	@Shadow private int scaledWidth;
@@ -28,7 +26,7 @@ public abstract class InGameHudMixin extends DrawableHelper{
 	@Inject(method = "renderHotbar", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/InGameHud;drawTexture(Lnet/minecraft/client/util/math/MatrixStack;IIIIII)V", ordinal = 0))
 	private void renderHotbarFrame(float tickDelta, MatrixStack matrices, CallbackInfo info) {
 		if(DHModConfig.INSTANCE.displayDoubleHotbar) {
-			this.drawTexture(matrices, this.scaledWidth / 2 - 91, this.scaledHeight - 22 - this.shift, 0, 0, 182, 22);
+			this.drawTexture(matrices, this.scaledWidth / 2 - 91, this.scaledHeight - 22 - DHModConfig.INSTANCE.shift, 0, 0, 182, 22);
 			this.onScreen = true;
 		}
 		
@@ -41,7 +39,7 @@ public abstract class InGameHudMixin extends DrawableHelper{
 			for (int n2 = 0; n2 < 9; ++n2) {
 		            int o = this.scaledWidth / 2 - 90 + n2 * 20 + 2;
 		            int p = this.scaledHeight - 16 - 3;
-		            this.renderHotbarItem(o, p-this.shift, tickDelta, getCameraPlayer(), getCameraPlayer().getInventory().main.get(n2+DHModConfig.INSTANCE.inventoryRow*9), m++);
+		            this.renderHotbarItem(o, p-DHModConfig.INSTANCE.shift, tickDelta, getCameraPlayer(), getCameraPlayer().getInventory().main.get(n2+DHModConfig.INSTANCE.inventoryRow*9), m++);
 		    }
 		}
 	}
@@ -49,7 +47,7 @@ public abstract class InGameHudMixin extends DrawableHelper{
 	@Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerInteractionManager;hasStatusBars()Z"))
 	public void shiftStatusBars(MatrixStack matrices, float tickDelta, CallbackInfo info) {
 		if(this.onScreen) {
-			matrices.translate(0, -this.shift, 0);
+			matrices.translate(0, -DHModConfig.INSTANCE.shift, 0);
 		}
 	}
 	
@@ -57,7 +55,7 @@ public abstract class InGameHudMixin extends DrawableHelper{
 	@Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;getSleepTimer()I", ordinal = 0))
 	public void returnStatusBars(MatrixStack matrices, float tickDelta, CallbackInfo info) {
 		if(this.onScreen) {
-			matrices.translate(0, this.shift, 0);
+			matrices.translate(0, DHModConfig.INSTANCE.shift, 0);
 		}
 		this.onScreen = false;
 	}
