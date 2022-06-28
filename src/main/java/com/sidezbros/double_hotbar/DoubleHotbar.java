@@ -19,8 +19,8 @@ import net.minecraft.screen.slot.SlotActionType;
 public class DoubleHotbar implements ClientModInitializer {
 	public static final Logger LOGGER = LogManager.getLogger("double_hotbar");
 	private static KeyBinding keyBinding;
-	private boolean[] hotbarKeys = new boolean[9];
-	private long[] timer = new long[9];
+	private boolean[] hotbarKeys = new boolean[10];
+	private long[] timer = new long[10];
 
 	@Override
 	public void onInitializeClient() {
@@ -28,8 +28,23 @@ public class DoubleHotbar implements ClientModInitializer {
 		keyBinding = KeyBindingHelper.registerKeyBinding(new KeyBinding("key.double_hotbar.swap", InputUtil.Type.KEYSYM,
 				GLFW.GLFW_KEY_R, "category.double_hotbar.keybinds"));
 		ClientTickEvents.END_CLIENT_TICK.register(client -> {
-			while (keyBinding.wasPressed()) {
-				this.swapStack(client.player, true, 0);
+			if (DHModConfig.INSTANCE.holdToSwap) {
+				if (keyBinding.isPressed() != this.hotbarKeys[9]) {
+					this.hotbarKeys[9] = keyBinding.isPressed();
+					if (keyBinding.isPressed()) {
+						timer[9] = Instant.now().toEpochMilli();
+					} else {
+						if (Instant.now().toEpochMilli() - timer[9] > DHModConfig.INSTANCE.holdTime) {
+							this.swapStack(client.player, false, client.player.getInventory().selectedSlot);
+						} else {
+							this.swapStack(client.player, true, 0);
+						}
+					}
+				}
+			} else {
+				while (keyBinding.wasPressed()) {
+					this.swapStack(client.player, true, 0);
+				}
 			}
 			if (DHModConfig.INSTANCE.allowDoubleTap) {
 				for (int i = 0; i < 9; i++) {
