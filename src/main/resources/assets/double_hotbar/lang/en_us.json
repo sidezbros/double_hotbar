@@ -4,5 +4,7 @@
   "text.autoconfig.double_hotbar.option.displayDoubleHotbar": "Show Second Hotbar",
   "text.autoconfig.double_hotbar.option.inventoryRow": "Selected Inventory Row",
   "text.autoconfig.double_hotbar.option.shift": "Vertical Position",
+  "text.autoconfig.double_hotbar.option.allowDoubleTap": "Allow Double Tap",
+    "text.autoconfig.double_hotbar.option.doubleTapWindow": "Double Tap Window (ms)",
   "text.autoconfig.double_hotbar.title":"Double Hotbar Config"
 }
