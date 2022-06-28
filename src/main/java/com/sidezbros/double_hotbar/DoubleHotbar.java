@@ -21,6 +21,7 @@ public class DoubleHotbar implements ClientModInitializer {
 	private static KeyBinding keyBinding;
 	private boolean[] hotbarKeys = new boolean[10];
 	private long[] timer = new long[10];
+	private boolean alreadySwapped = false;
 
 	@Override
 	public void onInitializeClient() {
@@ -34,12 +35,17 @@ public class DoubleHotbar implements ClientModInitializer {
 					if (keyBinding.isPressed()) {
 						timer[9] = Instant.now().toEpochMilli();
 					} else {
-						if (Instant.now().toEpochMilli() - timer[9] > DHModConfig.INSTANCE.holdTime) {
-							this.swapStack(client.player, false, client.player.getInventory().selectedSlot);
-						} else {
+						if (Instant.now().toEpochMilli() - timer[9] < DHModConfig.INSTANCE.holdTime) {
 							this.swapStack(client.player, true, 0);
+						} else {
+							this.alreadySwapped = false;
 						}
 					}
+				}
+				if (!this.alreadySwapped && keyBinding.isPressed()
+						&& Instant.now().toEpochMilli() - timer[9] > DHModConfig.INSTANCE.holdTime) {
+					this.swapStack(client.player, false, client.player.getInventory().selectedSlot);
+					this.alreadySwapped = true;
 				}
 			} else {
 				while (keyBinding.wasPressed()) {
@@ -79,6 +85,5 @@ public class DoubleHotbar implements ClientModInitializer {
 			interactionManager.clickSlot(player.playerScreenHandler.syncId,
 					DHModConfig.INSTANCE.inventoryRow * 9 + slot, slot, SlotActionType.SWAP, player);
 		}
-
 	}
 }
