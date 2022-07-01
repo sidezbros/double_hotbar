@@ -26,7 +26,7 @@ public abstract class InGameHudMixin extends DrawableHelper{
 	@Inject(method = "renderHotbar", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/InGameHud;drawTexture(Lnet/minecraft/client/util/math/MatrixStack;IIIIII)V", ordinal = 0))
 	private void renderHotbarFrame(float tickDelta, MatrixStack matrices, CallbackInfo info) {
 		if(DHModConfig.INSTANCE.displayDoubleHotbar) {
-			this.drawTexture(matrices, this.scaledWidth / 2 - 91, this.scaledHeight - 22 - DHModConfig.INSTANCE.shift, 0, 0, 182, 22);
+			this.drawTexture(matrices, this.scaledWidth / 2 - 91, this.scaledHeight - 22 - DHModConfig.INSTANCE.shift, 0, 0, 182, 22-DHModConfig.INSTANCE.renderCrop);
 			this.onScreen = true;
 		}
 		

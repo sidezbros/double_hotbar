@@ -8,5 +8,6 @@
   "text.autoconfig.double_hotbar.option.doubleTapWindow": "Double Tap Window (ms)",
   "text.autoconfig.double_hotbar.option.holdToSwap": "Enable Hold to Swap",
   "text.autoconfig.double_hotbar.option.holdTime": "Hold to Swap Time (ms)",
+  "text.autoconfig.double_hotbar.option.renderCrop": "Crop Hotbar Height (pixels)",
   "text.autoconfig.double_hotbar.title":"Double Hotbar Config"
 }

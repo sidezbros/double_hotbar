@@ -30,5 +30,7 @@ public class DHModConfig implements ConfigData {
 	public int inventoryRow = 3;
 	@ConfigEntry.BoundedDiscrete(min = 0, max = 100)
 	public int shift = 21;
+	@ConfigEntry.BoundedDiscrete(min = 0, max = 22)
+	public int renderCrop = 0;
 
 }
