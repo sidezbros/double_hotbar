@@ -36,7 +36,7 @@ public class DoubleHotbar implements ClientModInitializer {
 						timer[9] = Instant.now().toEpochMilli();
 					} else {
 						if (Instant.now().toEpochMilli() - timer[9] < DHModConfig.INSTANCE.holdTime) {
-							this.swapStack(client.player, true, 0);
+							this.swapStack(client.player, !DHModConfig.INSTANCE.holdToSwapBar, client.player.getInventory().selectedSlot);
 						} else {
 							this.alreadySwapped = false;
 						}
@@ -44,7 +44,7 @@ public class DoubleHotbar implements ClientModInitializer {
 				}
 				if (!this.alreadySwapped && keyBinding.isPressed()
 						&& Instant.now().toEpochMilli() - timer[9] > DHModConfig.INSTANCE.holdTime) {
-					this.swapStack(client.player, false, client.player.getInventory().selectedSlot);
+					this.swapStack(client.player, DHModConfig.INSTANCE.holdToSwapBar, client.player.getInventory().selectedSlot);
 					this.alreadySwapped = true;
 				}
 			} else {
