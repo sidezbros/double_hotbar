@@ -29,6 +29,7 @@ public class DHModConfig implements ConfigData {
 	public boolean displayDoubleHotbar = true;
 	@ConfigEntry.BoundedDiscrete(min = 0, max = 100)
 	public int shift = 21;
+	public boolean reverseBars = false;
 	@ConfigEntry.BoundedDiscrete(min = 0, max = 22)
 	public int renderCrop = 0;
 }

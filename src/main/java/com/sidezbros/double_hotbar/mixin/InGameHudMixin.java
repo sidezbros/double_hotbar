@@ -32,14 +32,39 @@ public abstract class InGameHudMixin extends DrawableHelper{
 		
 	}
 	
+	@Inject(method = "renderHotbar", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/InGameHud;drawTexture(Lnet/minecraft/client/util/math/MatrixStack;IIIIII)V", ordinal = 1))
+	private void shiftHotbarSelector(float tickDelta, MatrixStack matrices, CallbackInfo info) {
+		if(DHModConfig.INSTANCE.displayDoubleHotbar && DHModConfig.INSTANCE.reverseBars) {
+			matrices.translate(0, -DHModConfig.INSTANCE.shift, 0);
+		}
+		
+	}
+	
+	@Inject(method = "renderHotbar", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isEmpty()Z", ordinal = 0))
+	private void returnHotbarSelector(float tickDelta, MatrixStack matrices, CallbackInfo info) {
+		if(DHModConfig.INSTANCE.displayDoubleHotbar && DHModConfig.INSTANCE.reverseBars) {
+			matrices.translate(0, DHModConfig.INSTANCE.shift, 0);
+		}
+	}
+	
+	@Inject(method = "renderHotbar", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/InGameHud;setZOffset(I)V", ordinal = 1))
+	private void shiftHotbarItems(float tickDelta, MatrixStack matrices, CallbackInfo info) {
+		if(DHModConfig.INSTANCE.displayDoubleHotbar && DHModConfig.INSTANCE.reverseBars) {
+			this.scaledHeight -= DHModConfig.INSTANCE.shift;
+		}
+	}
+	
 	@Inject(method = "renderHotbar", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isEmpty()Z", ordinal = 1))
 	private void renderHotbarItems(float tickDelta, MatrixStack matrices, CallbackInfo info) {
 		if(DHModConfig.INSTANCE.displayDoubleHotbar) {
+			if(DHModConfig.INSTANCE.displayDoubleHotbar && DHModConfig.INSTANCE.reverseBars) {
+				this.scaledHeight += DHModConfig.INSTANCE.shift;
+			}
 			int m = 1;
 			for (int n2 = 0; n2 < 9; ++n2) {
 		            int o = this.scaledWidth / 2 - 90 + n2 * 20 + 2;
-		            int p = this.scaledHeight - 16 - 3;
-		            this.renderHotbarItem(o, p-DHModConfig.INSTANCE.shift, tickDelta, getCameraPlayer(), getCameraPlayer().getInventory().main.get(n2+DHModConfig.INSTANCE.inventoryRow*9), m++);
+		            int p = this.scaledHeight - 16 - 3 - (DHModConfig.INSTANCE.reverseBars ? 0 : DHModConfig.INSTANCE.shift);
+		            this.renderHotbarItem(o, p, tickDelta, getCameraPlayer(), getCameraPlayer().getInventory().main.get(n2+DHModConfig.INSTANCE.inventoryRow*9), m++);
 		    }
 		}
 	}
@@ -51,7 +76,6 @@ public abstract class InGameHudMixin extends DrawableHelper{
 		}
 	}
 	
-
 	@Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;getSleepTimer()I", ordinal = 0))
 	public void returnStatusBars(MatrixStack matrices, float tickDelta, CallbackInfo info) {
 		if(this.onScreen) {
