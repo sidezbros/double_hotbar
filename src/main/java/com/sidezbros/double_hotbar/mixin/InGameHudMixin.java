@@ -20,13 +20,13 @@ public abstract class InGameHudMixin extends DrawableHelper{
 	private boolean onScreen = false;
 	@Shadow private int scaledHeight;
 	@Shadow private int scaledWidth;
-	@Shadow abstract PlayerEntity getCameraPlayer();
-	@Shadow abstract void renderHotbarItem(int x, int y, float tickDelta, PlayerEntity player, ItemStack stack, int seed);
+	@Shadow protected abstract PlayerEntity getCameraPlayer();
+	@Shadow protected abstract void renderHotbarItem(MatrixStack matrixStack, int x, int y, float tickDelta, PlayerEntity player, ItemStack stack, int seed);
 	
 	@Inject(method = "renderHotbar", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/InGameHud;drawTexture(Lnet/minecraft/client/util/math/MatrixStack;IIIIII)V", ordinal = 0))
 	private void renderHotbarFrame(float tickDelta, MatrixStack matrices, CallbackInfo info) {
 		if(DHModConfig.INSTANCE.displayDoubleHotbar) {
-			this.drawTexture(matrices, this.scaledWidth / 2 - 91, this.scaledHeight - 22 - DHModConfig.INSTANCE.shift, 0, 0, 182, 22-DHModConfig.INSTANCE.renderCrop);
+			drawTexture(matrices, this.scaledWidth / 2 - 91, this.scaledHeight - 22 - DHModConfig.INSTANCE.shift, 0, 0, 182, 22-DHModConfig.INSTANCE.renderCrop);
 			this.onScreen = true;
 		}
 		
@@ -47,7 +47,7 @@ public abstract class InGameHudMixin extends DrawableHelper{
 		}
 	}
 	
-	@Inject(method = "renderHotbar", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/InGameHud;setZOffset(I)V", ordinal = 1))
+	@Inject(method = "renderHotbar", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/util/math/MatrixStack;pop()V"))
 	private void shiftHotbarItems(float tickDelta, MatrixStack matrices, CallbackInfo info) {
 		if(DHModConfig.INSTANCE.displayDoubleHotbar && DHModConfig.INSTANCE.reverseBars) {
 			this.scaledHeight -= DHModConfig.INSTANCE.shift;
@@ -57,14 +57,14 @@ public abstract class InGameHudMixin extends DrawableHelper{
 	@Inject(method = "renderHotbar", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isEmpty()Z", ordinal = 1))
 	private void renderHotbarItems(float tickDelta, MatrixStack matrices, CallbackInfo info) {
 		if(DHModConfig.INSTANCE.displayDoubleHotbar) {
-			if(DHModConfig.INSTANCE.displayDoubleHotbar && DHModConfig.INSTANCE.reverseBars) {
+			if(DHModConfig.INSTANCE.reverseBars) {
 				this.scaledHeight += DHModConfig.INSTANCE.shift;
 			}
 			int m = 1;
 			for (int n2 = 0; n2 < 9; ++n2) {
 		            int o = this.scaledWidth / 2 - 90 + n2 * 20 + 2;
 		            int p = this.scaledHeight - 16 - 3 - (DHModConfig.INSTANCE.reverseBars ? 0 : DHModConfig.INSTANCE.shift);
-		            this.renderHotbarItem(o, p, tickDelta, getCameraPlayer(), getCameraPlayer().getInventory().main.get(n2+DHModConfig.INSTANCE.inventoryRow*9), m++);
+		            this.renderHotbarItem(matrices, o, p, tickDelta, getCameraPlayer(), getCameraPlayer().getInventory().main.get(n2+DHModConfig.INSTANCE.inventoryRow*9), m++);
 		    }
 		}
 	}
