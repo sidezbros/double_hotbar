@@ -3,5 +3,13 @@
   "key.double_hotbar.swap": "Swap Hotbars",
   "text.autoconfig.double_hotbar.option.displayDoubleHotbar": "Show Second Hotbar",
   "text.autoconfig.double_hotbar.option.inventoryRow": "Selected Inventory Row",
+  "text.autoconfig.double_hotbar.option.shift": "Vertical Position",
+  "text.autoconfig.double_hotbar.option.allowDoubleTap": "Enable Double Tap",
+  "text.autoconfig.double_hotbar.option.doubleTapWindow": "Double Tap Window (ms)",
+  "text.autoconfig.double_hotbar.option.holdToSwap": "Enable Hold to Swap",
+  "text.autoconfig.double_hotbar.option.holdTime": "Hold to Swap Time (ms)",
+  "text.autoconfig.double_hotbar.option.renderCrop": "Crop Hotbar Height (pixels)",
+  "text.autoconfig.double_hotbar.option.holdToSwapBar": "Hold to Swap Entire Bar",
+  "text.autoconfig.double_hotbar.option.reverseBars": "Main Hotbar On Top (Experimental)",
   "text.autoconfig.double_hotbar.title":"Double Hotbar Config"
 }
