@@ -73,7 +73,7 @@ public class DoubleHotbar implements ClientModInitializer {
 	public void swapStack(PlayerEntity player, boolean fullRow, int slot) {
 		@SuppressWarnings("resource")
 		ClientPlayerInteractionManager interactionManager = MinecraftClient.getInstance().interactionManager;
-		if (interactionManager == null) {
+		if (interactionManager == null || DHModConfig.INSTANCE.disableMod) {
 			return;
 		}
 		if (fullRow) {

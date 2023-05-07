@@ -1,6 +1,7 @@
 {
   "category.double_hotbar.keybinds": "Double Hotbar",
   "key.double_hotbar.swap": "Swap Hotbars",
+  "text.autoconfig.double_hotbar.option.disableMod": "Disable Mod",
   "text.autoconfig.double_hotbar.option.displayDoubleHotbar": "Show Second Hotbar",
   "text.autoconfig.double_hotbar.option.inventoryRow": "Selected Inventory Row",
   "text.autoconfig.double_hotbar.option.shift": "Vertical Position",

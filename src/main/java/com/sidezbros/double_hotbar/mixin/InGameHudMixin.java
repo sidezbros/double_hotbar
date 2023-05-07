@@ -25,7 +25,7 @@ public abstract class InGameHudMixin extends DrawableHelper{
 	
 	@Inject(method = "renderHotbar", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/InGameHud;drawTexture(Lnet/minecraft/client/util/math/MatrixStack;IIIIII)V", ordinal = 0))
 	private void renderHotbarFrame(float tickDelta, MatrixStack matrices, CallbackInfo info) {
-		if(DHModConfig.INSTANCE.displayDoubleHotbar) {
+		if(DHModConfig.INSTANCE.displayDoubleHotbar && !DHModConfig.INSTANCE.disableMod) {
 			drawTexture(matrices, this.scaledWidth / 2 - 91, this.scaledHeight - 22 - DHModConfig.INSTANCE.shift, 0, 0, 182, 22-DHModConfig.INSTANCE.renderCrop);
 			this.onScreen = true;
 		}
@@ -34,7 +34,7 @@ public abstract class InGameHudMixin extends DrawableHelper{
 	
 	@Inject(method = "renderHotbar", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/InGameHud;drawTexture(Lnet/minecraft/client/util/math/MatrixStack;IIIIII)V", ordinal = 1))
 	private void shiftHotbarSelector(float tickDelta, MatrixStack matrices, CallbackInfo info) {
-		if(DHModConfig.INSTANCE.displayDoubleHotbar && DHModConfig.INSTANCE.reverseBars) {
+		if(DHModConfig.INSTANCE.displayDoubleHotbar && DHModConfig.INSTANCE.reverseBars && !DHModConfig.INSTANCE.disableMod) {
 			matrices.translate(0, -DHModConfig.INSTANCE.shift, 0);
 		}
 
@@ -42,21 +42,21 @@ public abstract class InGameHudMixin extends DrawableHelper{
 
 	@Inject(method = "renderHotbar", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isEmpty()Z", ordinal = 0))
 	private void returnHotbarSelector(float tickDelta, MatrixStack matrices, CallbackInfo info) {
-		if(DHModConfig.INSTANCE.displayDoubleHotbar && DHModConfig.INSTANCE.reverseBars) {
+		if(DHModConfig.INSTANCE.displayDoubleHotbar && DHModConfig.INSTANCE.reverseBars && !DHModConfig.INSTANCE.disableMod) {
 			matrices.translate(0, DHModConfig.INSTANCE.shift, 0);
 		}
 	}
 
 	@Inject(method = "renderHotbar", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/InGameHud;setZOffset(I)V", ordinal = 1))
 	private void shiftHotbarItems(float tickDelta, MatrixStack matrices, CallbackInfo info) {
-		if(DHModConfig.INSTANCE.displayDoubleHotbar && DHModConfig.INSTANCE.reverseBars) {
+		if(DHModConfig.INSTANCE.displayDoubleHotbar && DHModConfig.INSTANCE.reverseBars && !DHModConfig.INSTANCE.disableMod) {
 			this.scaledHeight -= DHModConfig.INSTANCE.shift;
 		}
 	}
 
 	@Inject(method = "renderHotbar", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isEmpty()Z", ordinal = 1))
 	private void renderHotbarItems(float tickDelta, MatrixStack matrices, CallbackInfo info) {
-		if(DHModConfig.INSTANCE.displayDoubleHotbar) {
+		if(DHModConfig.INSTANCE.displayDoubleHotbar && !DHModConfig.INSTANCE.disableMod) {
 			if(DHModConfig.INSTANCE.reverseBars) {
 				this.scaledHeight += DHModConfig.INSTANCE.shift;
 			}

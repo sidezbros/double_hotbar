@@ -17,6 +17,7 @@ public class DHModConfig implements ConfigData {
 		INSTANCE = AutoConfig.getConfigHolder(DHModConfig.class).getConfig();
 	}
 
+	public boolean disableMod = false;
 	@ConfigEntry.BoundedDiscrete(min = 1, max = 3)
 	public int inventoryRow = 3;
 	public boolean holdToSwap = true;
