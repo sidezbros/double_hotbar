@@ -5,6 +5,7 @@ import java.time.Instant;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import javax.sound.sampled.FloatControl;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -93,21 +94,24 @@ public class DoubleHotbar implements ClientModInitializer {
 		}
 	}
 
-	public void playWoosh() {
-		private Clip woosh1;
-		private Clip woosh2;
-		
+	public void playWoosh() { 
 		try {
-			if (DHModConfig.INSTANCE.woosh == 1) {
-				AudioInputStream woosh1AIS = AudioSystem.getAudioInputStream(this.getClass().getResource("/assets/double_hotbar/woosh1.wav"));
-				woosh1 = AudioSystem.getClip();
-				woosh1.open(woosh1AIS);
+			float volume = (float) DHModConfig.INSTANCE.wooshVolume / 100;
+
+			if (DHModConfig.INSTANCE.enableWoosh && (DHModConfig.INSTANCE.wooshType == 1)) {
+				AudioInputStream woosh1AIS = AudioSystem.getAudioInputStream(this.getClass().getResource("/assets/double_hotbar/sounds/woosh1.wav"));
+				Clip woosh1 = AudioSystem.getClip();
+				woosh1.open(woosh1AIS);       
+				FloatControl gainControl = (FloatControl) woosh1.getControl(FloatControl.Type.MASTER_GAIN);
+				gainControl.setValue(20f * (float) Math.log10(volume));
 				woosh1.start();
 			}
-			else if (DHModConfig.INSTANCE.woosh == 2) {
-				AudioInputStream woosh2AIS = AudioSystem.getAudioInputStream(this.getClass().getResource("/assets/double_hotbar/woosh2.wav"));
-				woosh2 = AudioSystem.getClip();
+			else if (DHModConfig.INSTANCE.enableWoosh && (DHModConfig.INSTANCE.wooshType == 2)) {
+				AudioInputStream woosh2AIS = AudioSystem.getAudioInputStream(this.getClass().getResource("/assets/double_hotbar/sounds/woosh2.wav"));
+				Clip woosh2 = AudioSystem.getClip();
 				woosh2.open(woosh2AIS);
+				FloatControl gainControl2 = (FloatControl) woosh2.getControl(FloatControl.Type.MASTER_GAIN);
+				gainControl2.setValue(20f * (float) Math.log10(volume));
 				woosh2.start();
 			}
 		} catch (Exception ex) {
