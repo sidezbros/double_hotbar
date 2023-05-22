@@ -98,7 +98,7 @@ public class DoubleHotbar implements ClientModInitializer {
 		try {
 			float volume = (float) DHModConfig.INSTANCE.wooshVolume / 100;
 
-			if (DHModConfig.INSTANCE.enableWoosh && (DHModConfig.INSTANCE.wooshType == 1)) {
+			if (DHModConfig.INSTANCE.enableWoosh && !DHModConfig.INSTANCE.useExperimentalWoosh) {
 				AudioInputStream woosh1AIS = AudioSystem.getAudioInputStream(this.getClass().getResource("/assets/double_hotbar/sounds/woosh1.wav"));
 				Clip woosh1 = AudioSystem.getClip();
 				woosh1.open(woosh1AIS);       
@@ -106,7 +106,7 @@ public class DoubleHotbar implements ClientModInitializer {
 				gainControl.setValue(20f * (float) Math.log10(volume));
 				woosh1.start();
 			}
-			else if (DHModConfig.INSTANCE.enableWoosh && (DHModConfig.INSTANCE.wooshType == 2)) {
+			else if (DHModConfig.INSTANCE.enableWoosh && DHModConfig.INSTANCE.useExperimentalWoosh) {
 				AudioInputStream woosh2AIS = AudioSystem.getAudioInputStream(this.getClass().getResource("/assets/double_hotbar/sounds/woosh2.wav"));
 				Clip woosh2 = AudioSystem.getClip();
 				woosh2.open(woosh2AIS);

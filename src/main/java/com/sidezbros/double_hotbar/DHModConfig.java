@@ -35,7 +35,6 @@ public class DHModConfig implements ConfigData {
 	public boolean enableWoosh = true;
 	@ConfigEntry.BoundedDiscrete(min = 0, max = 100)
 	public int wooshVolume = 25;
-	@ConfigEntry.BoundedDiscrete(min = 1, max = 2)
-	public int wooshType = 1;
+	public boolean useExperimentalWoosh = false;
 	public boolean reverseBars = false;
 }
