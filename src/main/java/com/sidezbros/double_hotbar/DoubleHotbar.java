@@ -2,6 +2,10 @@ package com.sidezbros.double_hotbar;
 
 import java.time.Instant;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.glfw.GLFW;
@@ -81,9 +85,33 @@ public class DoubleHotbar implements ClientModInitializer {
 				interactionManager.clickSlot(player.playerScreenHandler.syncId,
 						DHModConfig.INSTANCE.inventoryRow * 9 + i, i, SlotActionType.SWAP, player);
 			}
+			playWoosh();
 		} else {
 			interactionManager.clickSlot(player.playerScreenHandler.syncId,
 					DHModConfig.INSTANCE.inventoryRow * 9 + slot, slot, SlotActionType.SWAP, player);
+			playWoosh();
+		}
+	}
+
+	public void playWoosh() {
+		private Clip woosh1;
+		private Clip woosh2;
+		
+		try {
+			if (DHModConfig.INSTANCE.woosh == 1) {
+				AudioInputStream woosh1AIS = AudioSystem.getAudioInputStream(this.getClass().getResource("/assets/double_hotbar/woosh1.wav"));
+				woosh1 = AudioSystem.getClip();
+				woosh1.open(woosh1AIS);
+				woosh1.start();
+			}
+			else if (DHModConfig.INSTANCE.woosh == 2) {
+				AudioInputStream woosh2AIS = AudioSystem.getAudioInputStream(this.getClass().getResource("/assets/double_hotbar/woosh2.wav"));
+				woosh2 = AudioSystem.getClip();
+				woosh2.open(woosh2AIS);
+				woosh2.start();
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
 	}
 }
