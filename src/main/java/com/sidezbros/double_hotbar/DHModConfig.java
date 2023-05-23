@@ -32,5 +32,7 @@ public class DHModConfig implements ConfigData {
 	public int shift = 21;
 	@ConfigEntry.BoundedDiscrete(min = 0, max = 22)
 	public int renderCrop = 0;
+	@ConfigEntry.BoundedDiscrete(min = 0, max = 100)
+	public int wooshVolume = 100;
 	public boolean reverseBars = false;
 }

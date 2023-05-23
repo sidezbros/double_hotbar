@@ -14,7 +14,12 @@ import net.minecraft.client.network.ClientPlayerInteractionManager;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
 import net.minecraft.screen.slot.SlotActionType;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvent;
+import net.minecraft.util.Identifier;
 
 public class DoubleHotbar implements ClientModInitializer {
 	public static final Logger LOGGER = LogManager.getLogger("double_hotbar");
@@ -23,9 +28,13 @@ public class DoubleHotbar implements ClientModInitializer {
 	private long[] timer = new long[10];
 	private boolean alreadySwapped = false;
 
+	public static final Identifier WOOSH_SOUND_ID = new Identifier("double_hotbar:woosh");
+	public static SoundEvent WOOSH_SOUND_EVENT = SoundEvent.of(WOOSH_SOUND_ID);
+	
 	@Override
 	public void onInitializeClient() {
 		DHModConfig.init();
+		Registry.register(Registries.SOUND_EVENT, WOOSH_SOUND_ID, WOOSH_SOUND_EVENT);
 		keyBinding = KeyBindingHelper.registerKeyBinding(new KeyBinding("key.double_hotbar.swap", InputUtil.Type.KEYSYM,
 				GLFW.GLFW_KEY_R, "category.double_hotbar.keybinds"));
 		ClientTickEvents.END_CLIENT_TICK.register(client -> {
@@ -73,17 +82,27 @@ public class DoubleHotbar implements ClientModInitializer {
 	public void swapStack(PlayerEntity player, boolean fullRow, int slot) {
 		@SuppressWarnings("resource")
 		ClientPlayerInteractionManager interactionManager = MinecraftClient.getInstance().interactionManager;
+		int inventoryRow = DHModConfig.INSTANCE.inventoryRow * 9;
+		boolean playSound = false;
+		
 		if (interactionManager == null || DHModConfig.INSTANCE.disableMod) {
 			return;
 		}
+		
 		if (fullRow) {
 			for (int i = 0; i < 9; i++) {
-				interactionManager.clickSlot(player.playerScreenHandler.syncId,
-						DHModConfig.INSTANCE.inventoryRow * 9 + i, i, SlotActionType.SWAP, player);
+				if(player.getInventory().getStack(i) != player.getInventory().getStack(inventoryRow + i)) {
+					interactionManager.clickSlot(player.playerScreenHandler.syncId, inventoryRow + i, i, SlotActionType.SWAP, player);
+					playSound = true;
+				}
 			}
-		} else {
-			interactionManager.clickSlot(player.playerScreenHandler.syncId,
-					DHModConfig.INSTANCE.inventoryRow * 9 + slot, slot, SlotActionType.SWAP, player);
+		} else if(player.getInventory().getStack(slot) != player.getInventory().getStack(inventoryRow + slot)) {
+			interactionManager.clickSlot(player.playerScreenHandler.syncId, inventoryRow + slot, slot, SlotActionType.SWAP, player);
+			playSound = true;
+		}
+		
+		if (playSound) {
+			player.playSound(WOOSH_SOUND_EVENT, SoundCategory.MASTER, 0.01f * DHModConfig.INSTANCE.wooshVolume, 1f);
 		}
 	}
 }
