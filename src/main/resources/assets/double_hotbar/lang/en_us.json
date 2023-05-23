@@ -1,6 +1,7 @@
 {
   "category.double_hotbar.keybinds": "Double Hotbar",
   "key.double_hotbar.swap": "Swap Hotbars",
+  "subtitles.double_hotbar.woosh": "Hotbar Woosh",
   "text.autoconfig.double_hotbar.option.disableMod": "Disable Mod",
   "text.autoconfig.double_hotbar.option.displayDoubleHotbar": "Show Second Hotbar",
   "text.autoconfig.double_hotbar.option.inventoryRow": "Selected Inventory Row",
@@ -11,9 +12,7 @@
   "text.autoconfig.double_hotbar.option.holdTime": "Hold to Swap Time (ms)",
   "text.autoconfig.double_hotbar.option.renderCrop": "Crop Hotbar Height (pixels)",
   "text.autoconfig.double_hotbar.option.holdToSwapBar": "Hold to Swap Entire Bar",
-  "text.autoconfig.double_hotbar.option.enableWoosh": "Enable Woosh Sound Effect",
-  "text.autoconfig.double_hotbar.option.wooshVolume": "Woosh Volume",
-  "text.autoconfig.double_hotbar.option.useExperimentalWoosh": "Use Experimental Woosh Sound?",
+  "text.autoconfig.double_hotbar.option.wooshVolume": "Sound Effect Volume (%)",
   "text.autoconfig.double_hotbar.option.reverseBars": "Main Hotbar On Top (Experimental)",
   "text.autoconfig.double_hotbar.title":"Double Hotbar Config"
 
