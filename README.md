@@ -1,3 +1,6 @@
+# 🚨🚨🚨 BIG ANNOUNCEMENT 🚨🚨🚨
+[![big announcement](https://i.imgur.com/X1XU46x.png)](https://www.youtube.com/watch?v=kEl_om1-2wA "big announcement")
+
 # Double Hotbar
 Minecraft fabric mod that expands the HUD.
 Currently supports Minecraft 1.17.1-1.19.4
