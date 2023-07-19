@@ -21,7 +21,7 @@ public abstract class InGameHudMixin extends DrawableHelper{
 	@Shadow private int scaledHeight;
 	@Shadow private int scaledWidth;
 	@Shadow protected abstract PlayerEntity getCameraPlayer();
-	@Shadow protected abstract void renderHotbarItem(MatrixStack matrixStack, int x, int y, float tickDelta, PlayerEntity player, ItemStack stack, int seed);
+	@Shadow protected abstract void renderHotbarItem(int x, int y, float tickDelta, PlayerEntity player, ItemStack stack, int seed);
 	
 	@Inject(method = "renderHotbar", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/InGameHud;drawTexture(Lnet/minecraft/client/util/math/MatrixStack;IIIIII)V", ordinal = 0))
 	private void renderHotbarFrame(float tickDelta, MatrixStack matrices, CallbackInfo info) {
@@ -47,7 +47,7 @@ public abstract class InGameHudMixin extends DrawableHelper{
 		}
 	}
 	
-	@Inject(method = "renderHotbar", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/util/math/MatrixStack;pop()V"))
+	@Inject(method = "renderHotbar", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/InGameHud;setZOffset(I)V", ordinal = 1))
 	private void shiftHotbarItems(float tickDelta, MatrixStack matrices, CallbackInfo info) {
 		if(DHModConfig.INSTANCE.displayDoubleHotbar && DHModConfig.INSTANCE.reverseBars && !DHModConfig.INSTANCE.disableMod) {
 			this.scaledHeight -= DHModConfig.INSTANCE.shift;
@@ -64,7 +64,7 @@ public abstract class InGameHudMixin extends DrawableHelper{
 			for (int n2 = 0; n2 < 9; ++n2) {
 		            int o = this.scaledWidth / 2 - 90 + n2 * 20 + 2;
 		            int p = this.scaledHeight - 16 - 3 - (DHModConfig.INSTANCE.reverseBars ? 0 : DHModConfig.INSTANCE.shift);
-		            this.renderHotbarItem(matrices, o, p, tickDelta, getCameraPlayer(), getCameraPlayer().getInventory().main.get(n2+DHModConfig.INSTANCE.inventoryRow*9), m++);
+		            this.renderHotbarItem(o, p, tickDelta, getCameraPlayer(), getCameraPlayer().getInventory().main.get(n2+DHModConfig.INSTANCE.inventoryRow*9), m++);
 		    }
 		}
 	}

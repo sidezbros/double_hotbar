@@ -14,12 +14,11 @@ import net.minecraft.client.network.ClientPlayerInteractionManager;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
 import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
 
 public class DoubleHotbar implements ClientModInitializer {
 	public static final Logger LOGGER = LogManager.getLogger("double_hotbar");
@@ -29,12 +28,12 @@ public class DoubleHotbar implements ClientModInitializer {
 	private boolean alreadySwapped = false;
 
 	public static final Identifier WOOSH_SOUND_ID = new Identifier("double_hotbar:woosh");
-	public static SoundEvent WOOSH_SOUND_EVENT = SoundEvent.of(WOOSH_SOUND_ID);
+	public static SoundEvent WOOSH_SOUND_EVENT = new SoundEvent(WOOSH_SOUND_ID);
 	
 	@Override
 	public void onInitializeClient() {
 		DHModConfig.init();
-		Registry.register(Registries.SOUND_EVENT, WOOSH_SOUND_ID, WOOSH_SOUND_EVENT);
+		Registry.register(Registry.SOUND_EVENT, WOOSH_SOUND_ID, WOOSH_SOUND_EVENT);
 		keyBinding = KeyBindingHelper.registerKeyBinding(new KeyBinding("key.double_hotbar.swap", InputUtil.Type.KEYSYM,
 				GLFW.GLFW_KEY_R, "category.double_hotbar.keybinds"));
 		ClientTickEvents.END_CLIENT_TICK.register(client -> {
