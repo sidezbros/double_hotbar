@@ -20,20 +20,20 @@ public abstract class InGameHudMixin{
 	private boolean onScreen = false;
 	@Shadow private int scaledHeight;
 	@Shadow private int scaledWidth;
-	@Shadow private static Identifier WIDGETS_TEXTURE;
+	@Shadow private static Identifier HOTBAR_TEXTURE;
 	@Shadow protected abstract PlayerEntity getCameraPlayer();
 	@Shadow protected abstract void renderHotbarItem(DrawContext context, int x, int y, float tickDelta, PlayerEntity player, ItemStack stack, int seed);
 	
-	@Inject(method = "renderHotbar", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawTexture(Lnet/minecraft/util/Identifier;IIIIII)V", ordinal = 0))
+	@Inject(method = "renderHotbar", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawGuiTexture(Lnet/minecraft/util/Identifier;IIII)V", ordinal = 0))
 	private void renderHotbarFrame(float tickDelta, DrawContext context, CallbackInfo info) {
 		if(DHModConfig.INSTANCE.displayDoubleHotbar && !DHModConfig.INSTANCE.disableMod) {
-			context.drawTexture(WIDGETS_TEXTURE, this.scaledWidth / 2 - 91, this.scaledHeight - 22 - DHModConfig.INSTANCE.shift, 0, 0, 182, 22-DHModConfig.INSTANCE.renderCrop);
+			context.drawGuiTexture(HOTBAR_TEXTURE, this.scaledWidth / 2 - 91, this.scaledHeight - 22 - DHModConfig.INSTANCE.shift, 182, 22-DHModConfig.INSTANCE.renderCrop);
 			this.onScreen = true;
 		}
 		
 	}
 	
-	@Inject(method = "renderHotbar", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawTexture(Lnet/minecraft/util/Identifier;IIIIII)V", ordinal = 1))
+	@Inject(method = "renderHotbar", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawGuiTexture(Lnet/minecraft/util/Identifier;IIII)V", ordinal = 1))
 	private void shiftHotbarSelector(float tickDelta, DrawContext context, CallbackInfo info) {
 		if(DHModConfig.INSTANCE.displayDoubleHotbar && DHModConfig.INSTANCE.reverseBars && !DHModConfig.INSTANCE.disableMod) {
 			context.getMatrices().translate(0, -DHModConfig.INSTANCE.shift, 0);
