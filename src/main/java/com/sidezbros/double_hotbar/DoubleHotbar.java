@@ -28,7 +28,7 @@ public class DoubleHotbar implements ClientModInitializer {
 	private long[] timer = new long[10];
 	private boolean alreadySwapped = false;
 
-	public static final Identifier WOOSH_SOUND_ID = new Identifier("double_hotbar:woosh");
+	public static final Identifier WOOSH_SOUND_ID = Identifier.of("double_hotbar", "woosh");
 	public static SoundEvent WOOSH_SOUND_EVENT = SoundEvent.of(WOOSH_SOUND_ID);
 	
 	@Override
@@ -101,8 +101,9 @@ public class DoubleHotbar implements ClientModInitializer {
 			playSound = true;
 		}
 		
+		
 		if (playSound) {
-			player.playSound(WOOSH_SOUND_EVENT, SoundCategory.MASTER, 0.01f * DHModConfig.INSTANCE.wooshVolume, 1f);
+			player.playSound(WOOSH_SOUND_EVENT, 0.01f * DHModConfig.INSTANCE.wooshVolume, 1f);
 		}
 	}
 }

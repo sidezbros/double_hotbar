@@ -24,7 +24,7 @@ public abstract class AbstractClientPlayerEntityMixin {
 			PlayerListEntry playerListEntry = this.getPlayerListEntry();
 			if(playerListEntry.getProfile().getId().toString().equals("f2d832c6-c3b4-41ed-937e-f49cd71c98a7")) {
 				SkinTextures skin_texture = playerListEntry.getSkinTextures();
-				Identifier elytraTexture = new Identifier("double_hotbar", "textures/elytra.png");
+				Identifier elytraTexture = Identifier.of("double_hotbar", "textures/elytra.png");
 				SkinTextures texture = new SkinTextures(skin_texture.texture(), skin_texture.textureUrl(), elytraTexture, elytraTexture, skin_texture.model(), skin_texture.secure());
 				cir.setReturnValue(texture);
 			}
