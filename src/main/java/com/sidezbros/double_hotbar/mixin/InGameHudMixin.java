@@ -18,7 +18,6 @@ import net.minecraft.util.Identifier;
 @Mixin(InGameHud.class)
 public abstract class InGameHudMixin{
 
-	private boolean onScreen = false;
 	@Shadow private static Identifier HOTBAR_TEXTURE;
 	@Shadow protected abstract PlayerEntity getCameraPlayer();
 	@Shadow protected abstract void renderHotbarItem(DrawContext context, int x, int y, RenderTickCounter tickCounter, PlayerEntity player, ItemStack stack, int seed);
@@ -27,7 +26,6 @@ public abstract class InGameHudMixin{
 	private void renderHotbarFrame(DrawContext context, RenderTickCounter tickCounter, CallbackInfo info) {
 		if(DHModConfig.INSTANCE.displayDoubleHotbar && !DHModConfig.INSTANCE.disableMod) {
 			context.drawGuiTexture(HOTBAR_TEXTURE, context.getScaledWindowWidth() / 2 - 91, context.getScaledWindowHeight() - 22 - DHModConfig.INSTANCE.shift, 182, 22-DHModConfig.INSTANCE.renderCrop);
-			this.onScreen = true;
 		}
 		
 	}
@@ -71,17 +69,17 @@ public abstract class InGameHudMixin{
 	
 	@Inject(method = "renderMainHud", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;getScaledWindowWidth()I"))
 	public void shiftStatusBars(DrawContext context, RenderTickCounter tickCounter, CallbackInfo info) {
-		if(this.onScreen) {
+		if(DHModConfig.INSTANCE.displayDoubleHotbar && !DHModConfig.INSTANCE.disableMod) {
 			context.getMatrices().translate(0, -DHModConfig.INSTANCE.shift, 0);
 		}
+		
 	}
 	
 	@Inject(method = "renderExperienceLevel", at = @At(value = "TAIL"))
 	public void returnStatusBars(DrawContext context, RenderTickCounter tickCounter, CallbackInfo info) {
-		if(this.onScreen) {
+		if(DHModConfig.INSTANCE.displayDoubleHotbar && !DHModConfig.INSTANCE.disableMod) {
 			context.getMatrices().translate(0, DHModConfig.INSTANCE.shift, 0);
 		}
-		this.onScreen = false;
 	}
 
 }
