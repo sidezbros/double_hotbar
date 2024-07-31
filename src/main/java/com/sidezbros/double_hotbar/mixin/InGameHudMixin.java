@@ -75,7 +75,7 @@ public abstract class InGameHudMixin{
 		}
 	}
 	
-	@Inject(method = "renderMainHud", at = @At(value = "TAIL"))
+	@Inject(method = "renderExperienceLevel", at = @At(value = "TAIL"))
 	public void returnStatusBars(DrawContext context, float tickDelta, CallbackInfo info) {
 		if(this.onScreen) {
 			context.getMatrices().translate(0, DHModConfig.INSTANCE.shift, 0);
