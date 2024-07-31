@@ -69,7 +69,7 @@ public abstract class InGameHudMixin{
 	
 	@Inject(method = "renderMainHud", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;getScaledWindowWidth()I"))
 	public void shiftStatusBars(DrawContext context, RenderTickCounter tickCounter, CallbackInfo info) {
-		if(DHModConfig.INSTANCE.displayDoubleHotbar && !DHModConfig.INSTANCE.disableMod) {
+		if(DHModConfig.INSTANCE.displayDoubleHotbar && !DHModConfig.INSTANCE.disableMod && !getCameraPlayer().isSpectator()) {
 			context.getMatrices().translate(0, -DHModConfig.INSTANCE.shift, 0);
 		}
 		
@@ -77,7 +77,7 @@ public abstract class InGameHudMixin{
 	
 	@Inject(method = "renderExperienceLevel", at = @At(value = "TAIL"))
 	public void returnStatusBars(DrawContext context, RenderTickCounter tickCounter, CallbackInfo info) {
-		if(DHModConfig.INSTANCE.displayDoubleHotbar && !DHModConfig.INSTANCE.disableMod) {
+		if(DHModConfig.INSTANCE.displayDoubleHotbar && !DHModConfig.INSTANCE.disableMod && !getCameraPlayer().isSpectator()) {
 			context.getMatrices().translate(0, DHModConfig.INSTANCE.shift, 0);
 		}
 	}
