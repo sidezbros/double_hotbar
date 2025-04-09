@@ -68,7 +68,7 @@ public abstract class InGameHudMixin{
 		            int o = context.getScaledWindowWidth() / 2 - 90 + n2 * 20 + 2;
 		            int p = context.getScaledWindowHeight() - 16 - 3 - (DHModConfig.INSTANCE.reverseBars ? 0 : DHModConfig.INSTANCE.shift);
 		            if(getCameraPlayer() != null) {
-		            	this.renderHotbarItem(context, o, p, tickCounter, getCameraPlayer(), getCameraPlayer().getInventory().main.get(n2+DHModConfig.INSTANCE.inventoryRow*9), m++);
+		            	this.renderHotbarItem(context, o, p, tickCounter, getCameraPlayer(), getCameraPlayer().getInventory().getMainStacks().get(n2+DHModConfig.INSTANCE.inventoryRow*9), m++);
 		            }
 		            
 		    }
