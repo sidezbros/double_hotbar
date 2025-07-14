@@ -1,6 +1,6 @@
 # Double Hotbar
 Minecraft fabric mod that expands the HUD.
-Currently supports Minecraft 1.17.1-1.21.3
+Currently supports Minecraft 1.17.1-1.21.5
 
 Download at: https://www.curseforge.com/minecraft/mc-mods/double-hotbar
 
