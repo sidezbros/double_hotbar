@@ -9,7 +9,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.network.PlayerListEntry;
-import net.minecraft.client.util.SkinTextures;
+import net.minecraft.entity.player.SkinTextures;
+import net.minecraft.util.AssetInfo;
 import net.minecraft.util.Identifier;
 
 
@@ -18,14 +19,14 @@ public abstract class AbstractClientPlayerEntityMixin {
 	
 	@Shadow protected abstract PlayerListEntry getPlayerListEntry();
 	
-	@Inject(method = "getSkinTextures", at = @At("RETURN"), cancellable = true)
-	private void getSkinTextures(CallbackInfoReturnable<SkinTextures> cir) {
+	@Inject(method = "getSkin", at = @At("RETURN"), cancellable = true)
+	private void getSkin(CallbackInfoReturnable<SkinTextures> cir) {
 		try {
 			PlayerListEntry playerListEntry = this.getPlayerListEntry();
-			if(playerListEntry.getProfile().getId().toString().equals("f2d832c6-c3b4-41ed-937e-f49cd71c98a7")) {
+			if(playerListEntry.getProfile().id().toString().equals("f2d832c6-c3b4-41ed-937e-f49cd71c98a7")) {
 				SkinTextures skin_texture = playerListEntry.getSkinTextures();
 				Identifier elytraTexture = Identifier.of("double_hotbar", "textures/elytra.png");
-				SkinTextures texture = new SkinTextures(skin_texture.texture(), skin_texture.textureUrl(), elytraTexture, elytraTexture, skin_texture.model(), skin_texture.secure());
+				SkinTextures texture = SkinTextures.create(skin_texture.body(), new AssetInfo.SkinAssetInfo(elytraTexture, "cape"), new AssetInfo.SkinAssetInfo(elytraTexture, "elytra"), skin_texture.model());
 				cir.setReturnValue(texture);
 			}
 		} catch(Exception e) {

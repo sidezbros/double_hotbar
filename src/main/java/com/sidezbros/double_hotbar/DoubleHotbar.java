@@ -28,6 +28,7 @@ public class DoubleHotbar implements ClientModInitializer {
 	private boolean alreadySwapped = false;
 
 	public static final Identifier WOOSH_SOUND_ID = Identifier.of("double_hotbar", "woosh");
+	private static final KeyBinding.Category KEYBIND_CATEGORY = KeyBinding.Category.create(Identifier.of("double_hotbar", "keybinds"));
 	public static SoundEvent WOOSH_SOUND_EVENT = SoundEvent.of(WOOSH_SOUND_ID);
 	
 	@Override
@@ -35,7 +36,7 @@ public class DoubleHotbar implements ClientModInitializer {
 		DHModConfig.init();
 		Registry.register(Registries.SOUND_EVENT, WOOSH_SOUND_ID, WOOSH_SOUND_EVENT);
 		keyBinding = KeyBindingHelper.registerKeyBinding(new KeyBinding("key.double_hotbar.swap", InputUtil.Type.KEYSYM,
-				GLFW.GLFW_KEY_R, "category.double_hotbar.keybinds"));
+				GLFW.GLFW_KEY_R, KEYBIND_CATEGORY));
 		ClientTickEvents.END_CLIENT_TICK.register(client -> {
 			if (DHModConfig.INSTANCE.holdToSwap) {
 				if (keyBinding.isPressed() != this.hotbarKeys[9]) {
