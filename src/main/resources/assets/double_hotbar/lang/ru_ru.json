@@ -1,0 +1,20 @@
+{
+  "key.category.double_hotbar.keybinds": "Double Hotbar",
+  "key.double_hotbar.swap": "Сменить Хотбар",
+  "subtitles.double_hotbar.woosh": "Hotbar Woosh",
+  "text.autoconfig.double_hotbar.option.disableMod": "Отключить мод",
+  "text.autoconfig.double_hotbar.option.displayDoubleHotbar": "Показывать второй хотбар",
+  "text.autoconfig.double_hotbar.option.inventoryRow": "Выбранная строка инвентаря",
+  "text.autoconfig.double_hotbar.option.shift": "Позиция по вертикали",
+  "text.autoconfig.double_hotbar.option.allowDoubleTap": "Включить двойное нажатие",
+  "text.autoconfig.double_hotbar.option.doubleTapWindow": "Время для двойного нажатия (ms)",
+  "text.autoconfig.double_hotbar.option.holdToSwap": "Режим \"Удержать для замены\"",
+  "text.autoconfig.double_hotbar.option.holdTime": "Время удержания для замены (ms)",
+  "text.autoconfig.double_hotbar.option.renderCrop": "Обрезать высоту хотбара (pixels)",
+  "text.autoconfig.double_hotbar.option.holdToSwapBar": "Удержать для смены всего хотбара",
+  "text.autoconfig.double_hotbar.option.pressToSwapActive": "Замена активного предмета при нажатию",
+  "text.autoconfig.double_hotbar.option.wooshVolume": "Громкость звукового эффекта (%)",
+  "text.autoconfig.double_hotbar.option.reverseBars": "Закрепить Хотбар наверху",
+  "text.autoconfig.double_hotbar.title":"Настройки Double Hotbar"
+
+}

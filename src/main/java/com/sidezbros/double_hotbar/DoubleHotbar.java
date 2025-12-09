@@ -37,7 +37,9 @@ public class DoubleHotbar implements ClientModInitializer {
 		Registry.register(Registries.SOUND_EVENT, WOOSH_SOUND_ID, WOOSH_SOUND_EVENT);
 		keyBinding = KeyBindingHelper.registerKeyBinding(new KeyBinding("key.double_hotbar.swap", InputUtil.Type.KEYSYM,
 				GLFW.GLFW_KEY_R, KEYBIND_CATEGORY));
+
 		ClientTickEvents.END_CLIENT_TICK.register(client -> {
+
 			if (DHModConfig.INSTANCE.holdToSwap) {
 				if (keyBinding.isPressed() != this.hotbarKeys[9]) {
 					this.hotbarKeys[9] = keyBinding.isPressed();
@@ -56,11 +58,16 @@ public class DoubleHotbar implements ClientModInitializer {
 					this.swapStack(client.player, DHModConfig.INSTANCE.holdToSwapBar, client.player.getInventory().getSelectedSlot());
 					this.alreadySwapped = true;
 				}
+
 			} else {
 				while (keyBinding.wasPressed()) {
-					this.swapStack(client.player, true, 0);
+					this.swapStack(
+                            client.player,
+                            !DHModConfig.INSTANCE.pressToSwapActive, // short version of "DHModConfig.INSTANCE.pressToSwapActive ? false : true"
+                            DHModConfig.INSTANCE.pressToSwapActive ? client.player.getInventory().getSelectedSlot() : 0);
 				}
 			}
+
 			if (DHModConfig.INSTANCE.allowDoubleTap) {
 				for (int i = 0; i < 9; i++) {
 					if (client.options.hotbarKeys[i].isPressed() != this.hotbarKeys[i]) {
@@ -76,6 +83,7 @@ public class DoubleHotbar implements ClientModInitializer {
 					}
 				}
 			}
+
 		});
 	}
 

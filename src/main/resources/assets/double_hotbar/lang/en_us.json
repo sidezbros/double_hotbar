@@ -12,6 +12,7 @@
   "text.autoconfig.double_hotbar.option.holdTime": "Hold to Swap Time (ms)",
   "text.autoconfig.double_hotbar.option.renderCrop": "Crop Hotbar Height (pixels)",
   "text.autoconfig.double_hotbar.option.holdToSwapBar": "Hold to Swap Entire Bar",
+  "text.autoconfig.double_hotbar.option.pressToSwapActive": "Replacing the active item when pressed",
   "text.autoconfig.double_hotbar.option.wooshVolume": "Sound Effect Volume (%)",
   "text.autoconfig.double_hotbar.option.reverseBars": "Main Hotbar On Top",
   "text.autoconfig.double_hotbar.title":"Double Hotbar Config"

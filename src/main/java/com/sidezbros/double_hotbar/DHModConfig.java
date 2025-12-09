@@ -22,6 +22,7 @@ public class DHModConfig implements ConfigData {
 	public int inventoryRow = 3;
 	public boolean holdToSwap = true;
 	public boolean holdToSwapBar = false;
+	public boolean pressToSwapActive = false;
 	public boolean allowDoubleTap = true;
 	@ConfigEntry.BoundedDiscrete(min = 50, max = 1000)
 	public int holdTime = 200;
