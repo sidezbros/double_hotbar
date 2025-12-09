@@ -23,6 +23,7 @@ import net.minecraft.util.Identifier;
 public class DoubleHotbar implements ClientModInitializer {
 	public static final Logger LOGGER = LogManager.getLogger("double_hotbar");
 	private static KeyBinding keyBinding;
+	private static KeyBinding disableKeyBinding;
 	private boolean[] hotbarKeys = new boolean[10];
 	private long[] timer = new long[10];
 	private boolean alreadySwapped = false;
@@ -37,6 +38,8 @@ public class DoubleHotbar implements ClientModInitializer {
 		Registry.register(Registries.SOUND_EVENT, WOOSH_SOUND_ID, WOOSH_SOUND_EVENT);
 		keyBinding = KeyBindingHelper.registerKeyBinding(new KeyBinding("key.double_hotbar.swap", InputUtil.Type.KEYSYM,
 				GLFW.GLFW_KEY_R, KEYBIND_CATEGORY));
+		disableKeyBinding = KeyBindingHelper.registerKeyBinding(new KeyBinding("key.double_hotbar.disable", InputUtil.Type.KEYSYM,
+				GLFW.GLFW_KEY_UNKNOWN, KEYBIND_CATEGORY));
 		ClientTickEvents.END_CLIENT_TICK.register(client -> {
 			if (DHModConfig.INSTANCE.holdToSwap) {
 				if (keyBinding.isPressed() != this.hotbarKeys[9]) {
@@ -75,6 +78,9 @@ public class DoubleHotbar implements ClientModInitializer {
 						}
 					}
 				}
+			}
+			if (disableKeyBinding.wasPressed()) {
+				DHModConfig.INSTANCE.disableMod = !DHModConfig.INSTANCE.disableMod;
 			}
 		});
 	}

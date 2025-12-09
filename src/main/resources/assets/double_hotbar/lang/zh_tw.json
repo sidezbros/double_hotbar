@@ -1,6 +1,7 @@
 {
   "key.category.double_hotbar.keybinds": "雙層快捷欄 （Double Hotbar）",
   "key.double_hotbar.swap": "切換快捷欄",
+  "key.double_hotbar.disable": "禁用第二個快速欄",
   "subtitles.double_hotbar.woosh": "快捷欄切換音效",
   "text.autoconfig.double_hotbar.option.disableMod": "停用模組",
   "text.autoconfig.double_hotbar.option.displayDoubleHotbar": "顯示第二層快捷欄",
