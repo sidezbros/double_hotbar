@@ -1,6 +1,7 @@
 {
   "key.category.double_hotbar.keybinds": "Double Hotbar",
   "key.double_hotbar.swap": "Swap Hotbars",
+  "key.double_hotbar.disable": "Disable Second Hotbar",
   "subtitles.double_hotbar.woosh": "Hotbar Woosh",
   "text.autoconfig.double_hotbar.option.disableMod": "Disable Mod",
   "text.autoconfig.double_hotbar.option.displayDoubleHotbar": "Show Second Hotbar",
