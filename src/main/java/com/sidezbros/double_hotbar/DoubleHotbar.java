@@ -1,47 +1,47 @@
 package com.sidezbros.double_hotbar;
 
-import java.time.Instant;
-
+import com.mojang.authlib.minecraft.client.MinecraftClient;
+import com.mojang.blaze3d.platform.InputConstants;
+import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
+import net.minecraft.client.KeyMapping;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.MultiPlayerGameMode;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.Identifier;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.ContainerInput;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.glfw.GLFW;
 
-import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientPlayerInteractionManager;
-import net.minecraft.client.option.KeyBinding;
-import net.minecraft.client.util.InputUtil;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.screen.slot.SlotActionType;
-import net.minecraft.sound.SoundEvent;
-import net.minecraft.util.Identifier;
+import java.time.Instant;
 
 public class DoubleHotbar implements ClientModInitializer {
 	public static final Logger LOGGER = LogManager.getLogger("double_hotbar");
-	private static KeyBinding keyBinding;
-	private boolean[] hotbarKeys = new boolean[10];
+	private static KeyMapping keyBinding;
+	private boolean[] keyHotbarSlots = new boolean[10];
 	private long[] timer = new long[10];
 	private boolean alreadySwapped = false;
 
-	public static final Identifier WOOSH_SOUND_ID = Identifier.of("double_hotbar", "woosh");
-	private static final KeyBinding.Category KEYBIND_CATEGORY = KeyBinding.Category.create(Identifier.of("double_hotbar", "keybinds"));
-	public static SoundEvent WOOSH_SOUND_EVENT = SoundEvent.of(WOOSH_SOUND_ID);
+	public static final Identifier WOOSH_SOUND_ID = Identifier.fromNamespaceAndPath("double_hotbar", "woosh");
+	private static final KeyMapping.Category KEYBIND_CATEGORY = KeyMapping.Category.register(Identifier.fromNamespaceAndPath("double_hotbar", "keybinds"));
+	public static SoundEvent WOOSH_SOUND_EVENT = SoundEvent.createVariableRangeEvent(WOOSH_SOUND_ID);
 	
 	@Override
 	public void onInitializeClient() {
 		DHModConfig.init();
-		Registry.register(Registries.SOUND_EVENT, WOOSH_SOUND_ID, WOOSH_SOUND_EVENT);
-		keyBinding = KeyBindingHelper.registerKeyBinding(new KeyBinding("key.double_hotbar.swap", InputUtil.Type.KEYSYM,
+		Registry.register(BuiltInRegistries.SOUND_EVENT, WOOSH_SOUND_ID, WOOSH_SOUND_EVENT);
+		keyBinding = KeyMappingHelper.registerKeyMapping(new KeyMapping("key.double_hotbar.swap", InputConstants.Type.KEYSYM,
 				GLFW.GLFW_KEY_R, KEYBIND_CATEGORY));
 		ClientTickEvents.END_CLIENT_TICK.register(client -> {
 			if (DHModConfig.INSTANCE.holdToSwap) {
-				if (keyBinding.isPressed() != this.hotbarKeys[9]) {
-					this.hotbarKeys[9] = keyBinding.isPressed();
-					if (keyBinding.isPressed()) {
+				if (keyBinding.isDown() != this.keyHotbarSlots[9]) {
+					this.keyHotbarSlots[9] = keyBinding.isDown();
+					if (keyBinding.isDown()) {
 						timer[9] = Instant.now().toEpochMilli();
 					} else {
 						if (Instant.now().toEpochMilli() - timer[9] < DHModConfig.INSTANCE.holdTime) {
@@ -51,21 +51,21 @@ public class DoubleHotbar implements ClientModInitializer {
 						}
 					}
 				}
-				if (!this.alreadySwapped && keyBinding.isPressed()
+				if (!this.alreadySwapped && keyBinding.isDown()
 						&& Instant.now().toEpochMilli() - timer[9] > DHModConfig.INSTANCE.holdTime) {
 					this.swapStack(client.player, DHModConfig.INSTANCE.holdToSwapBar, client.player.getInventory().getSelectedSlot());
 					this.alreadySwapped = true;
 				}
 			} else {
-				while (keyBinding.wasPressed()) {
+				while (keyBinding.consumeClick()) {
 					this.swapStack(client.player, true, 0);
 				}
 			}
 			if (DHModConfig.INSTANCE.allowDoubleTap) {
 				for (int i = 0; i < 9; i++) {
-					if (client.options.hotbarKeys[i].isPressed() != this.hotbarKeys[i]) {
-						this.hotbarKeys[i] = client.options.hotbarKeys[i].isPressed();
-						if (client.options.hotbarKeys[i].isPressed()) {
+					if (client.options.keyHotbarSlots[i].isDown() != this.keyHotbarSlots[i]) {
+						this.keyHotbarSlots[i] = client.options.keyHotbarSlots[i].isDown();
+						if (client.options.keyHotbarSlots[i].isDown()) {
 							if (Instant.now().toEpochMilli() - timer[i] < DHModConfig.INSTANCE.doubleTapWindow) {
 								this.swapStack(client.player, false, i);
 								timer[i] = 0;
@@ -79,9 +79,8 @@ public class DoubleHotbar implements ClientModInitializer {
 		});
 	}
 
-	public void swapStack(PlayerEntity player, boolean fullRow, int slot) {
-		@SuppressWarnings("resource")
-		ClientPlayerInteractionManager interactionManager = MinecraftClient.getInstance().interactionManager;
+	public void swapStack(Player player, boolean fullRow, int slot) {
+		MultiPlayerGameMode interactionManager = Minecraft.getInstance().gameMode;
 		int inventoryRow = DHModConfig.INSTANCE.inventoryRow * 9;
 		boolean playSound = false;
 		
@@ -91,13 +90,13 @@ public class DoubleHotbar implements ClientModInitializer {
 		
 		if (fullRow) {
 			for (int i = 0; i < 9; i++) {
-				if(player.getInventory().getStack(i) != player.getInventory().getStack(inventoryRow + i)) {
-					interactionManager.clickSlot(player.playerScreenHandler.syncId, inventoryRow + i, i, SlotActionType.SWAP, player);
+				if(player.getInventory().getSlot(i) != player.getInventory().getSlot(inventoryRow + i)) {
+					interactionManager.handleContainerInput(player.inventoryMenu.containerId, inventoryRow + i, i, ContainerInput.SWAP, player);
 					playSound = true;
 				}
 			}
-		} else if(player.getInventory().getStack(slot) != player.getInventory().getStack(inventoryRow + slot)) {
-			interactionManager.clickSlot(player.playerScreenHandler.syncId, inventoryRow + slot, slot, SlotActionType.SWAP, player);
+		} else if(player.getInventory().getSlot(slot) != player.getInventory().getSlot(inventoryRow + slot)) {
+			interactionManager.handleContainerInput(player.inventoryMenu.containerId, inventoryRow + slot, slot, ContainerInput.SWAP, player);
 			playSound = true;
 		}
 		
