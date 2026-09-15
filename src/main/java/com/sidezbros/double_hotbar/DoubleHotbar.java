@@ -35,7 +35,7 @@ public class DoubleHotbar implements ClientModInitializer {
 		DHModConfig.init();
 		Registry.register(BuiltInRegistries.SOUND_EVENT, WOOSH_SOUND_ID, WOOSH_SOUND_EVENT);
 		keyBinding = KeyMappingHelper.registerKeyMapping(new KeyMapping("key.double_hotbar.swap", InputConstants.Type.KEYBOARD,
-			SDLKeycode.SDLK_R, KEYBIND_CATEGORY));
+			InputConstants.KEY_R, KEYBIND_CATEGORY));
 		ClientTickEvents.END_CLIENT_TICK.register(client -> {
 			if (DHModConfig.INSTANCE.holdToSwap) {
 				if (keyBinding.isDown() != this.keyHotbarSlots[9]) {
