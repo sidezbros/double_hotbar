@@ -6,6 +6,8 @@ import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.core.ClientAsset;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.PlayerSkin;
+import net.minecraft.world.entity.player.PlayerSkin.Patch;
+
 import org.jspecify.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -27,11 +29,11 @@ public abstract class AbstractClientPlayerMixin {
             if (info.getProfile().id().toString().equals("f2d832c6-c3b4-41ed-937e-f49cd71c98a7")) {
                 PlayerSkin skin_texture = info.getSkin();
                 Identifier elytraTexture = Identifier.fromNamespaceAndPath("double_hotbar", "textures/elytra.png");
-                PlayerSkin texture = PlayerSkin.insecure(skin_texture.body(), new ClientAsset.DownloadedTexture(elytraTexture, "cape"), new ClientAsset.DownloadedTexture(elytraTexture, "elytra"), skin_texture.model());
+                PlayerSkin texture = new PlayerSkin(skin_texture.body(), new ClientAsset.DownloadedTexture(elytraTexture, "cape"), new ClientAsset.DownloadedTexture(elytraTexture, "elytra"), skin_texture.model(), true);
                 cir.setReturnValue(texture);
             }
         } catch (Exception e) {
-            // If playerListEntry fails, ignore and move on.
+            // If getPlayerInfo fails, ignore and move on.
         }
     }
 }
