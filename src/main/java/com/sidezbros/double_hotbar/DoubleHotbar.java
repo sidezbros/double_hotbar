@@ -1,6 +1,5 @@
 package com.sidezbros.double_hotbar;
 
-import com.mojang.authlib.minecraft.client.MinecraftClient;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
@@ -16,7 +15,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ContainerInput;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.lwjgl.glfw.GLFW;
+import org.lwjgl.sdl.SDLKeycode;
 
 import java.time.Instant;
 
@@ -35,8 +34,8 @@ public class DoubleHotbar implements ClientModInitializer {
 	public void onInitializeClient() {
 		DHModConfig.init();
 		Registry.register(BuiltInRegistries.SOUND_EVENT, WOOSH_SOUND_ID, WOOSH_SOUND_EVENT);
-		keyBinding = KeyMappingHelper.registerKeyMapping(new KeyMapping("key.double_hotbar.swap", InputConstants.Type.KEYSYM,
-				GLFW.GLFW_KEY_R, KEYBIND_CATEGORY));
+		keyBinding = KeyMappingHelper.registerKeyMapping(new KeyMapping("key.double_hotbar.swap", InputConstants.Type.KEYBOARD,
+			SDLKeycode.SDLK_R, KEYBIND_CATEGORY));
 		ClientTickEvents.END_CLIENT_TICK.register(client -> {
 			if (DHModConfig.INSTANCE.holdToSwap) {
 				if (keyBinding.isDown() != this.keyHotbarSlots[9]) {
